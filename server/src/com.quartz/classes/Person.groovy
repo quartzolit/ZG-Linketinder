@@ -11,14 +11,14 @@ class Person implements IPerson{
 
 
     @Override
-    void addSkills(Person p, EnumSkills skill) {
+    void addSkills(EnumSkills skill) {
 
-        p.skills << skill
-        p.skills = p.skills.unique()
+        this.skills << skill
+        this.skills = this.skills.unique()
     }
 
     @Override
-    void removeSkills(Person p, EnumSkills skill) {
-        p.skills.remove(p.skills.find(skill))
+    void removeSkills(EnumSkills skill) {
+        this.skills.remove(skill)
     }
 }

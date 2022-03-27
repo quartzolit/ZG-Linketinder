@@ -3,7 +3,7 @@ package com.quartz.classes
 @groovy.transform.ToString
 class Loader {
 
-    public static List<Person> loadCompanies(){
+    static List<Person> loadCompanies(){
         Company co1 = new Company(name: "Zero Glosa", email: "comercial@zgsolucoes.com.br"
                 ,cnpj: "14.488.144/0001", country: "Brazil", state: "Goiás", cep: "74070-040"
                 , description: "Awesome Company to work"
@@ -33,7 +33,7 @@ class Loader {
         return [co1,co2,co3,co5,co5]
     }
 
-    public static List<Person> loadCandidates(){
+    static List<Person> loadCandidates(){
         Candidate ca1 = new Candidate(name: "Luiz Arthur Moura", email: "luiz.moura@acelerazg.com.br"
                     ,cpf: "405.155.608-55", age: 30, state: "São Paulo", cep: "12608-170"
                     , description: "Cool guy"

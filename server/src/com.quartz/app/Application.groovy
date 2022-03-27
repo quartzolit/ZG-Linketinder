@@ -5,6 +5,7 @@ import com.quartz.classes.Company
 import com.quartz.classes.EnumSkills
 import com.quartz.classes.Loader
 
+
 //Setting my lists
 List<Candidate> candidates = [];
 List<Company> companies = [];
@@ -29,7 +30,7 @@ println(companies)
 println(candidates[0])
 
 //Testing some Methods
-candidates[0].addSkills(candidates[0],EnumSkills.BACKEND)
+candidates[0].addSkills(EnumSkills.BACKEND)
 
 println(candidates[0])
 
