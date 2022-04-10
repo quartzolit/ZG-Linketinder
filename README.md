@@ -14,7 +14,13 @@ A loader of 5 companies and 5 candidates were also implemented
 
 Unit tests for Loader and Person Classed added
 
+##1.2
+
+FrontEnd files added
+
 
 # Executing project
 
 To execute the project you only need to run the application.groovy file. If you want to run unit tests, run the files in test folder instead
+
+to run frontEnd project. You have to install dependencies, then use npm start to run
