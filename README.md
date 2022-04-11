@@ -14,9 +14,16 @@ A loader of 5 companies and 5 candidates were also implemented
 
 Unit tests for Loader and Person Classed added
 
-##1.2
+## 1.2
 
-FrontEnd files added
+FrontEnd files added. Our main file is script.ts, which is loaded on index.html file. This page is responsible to signup at Linketinder. After creating an account and login. The page will load visit-page.html page and visit-page.ts script. At this page you can manage your skills and look for available vacancy slots.
+
+PS: There is a issue on saving the slots you approve and disapprove. It will be fixed on future patches.
+
+
+## 1.3
+
+Regex validation on form implemented and tested!
 
 
 # Executing project
