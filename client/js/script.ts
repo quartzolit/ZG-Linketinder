@@ -18,6 +18,15 @@ interface Person{
 
 //--creating global variables--
 const people: Person[]=[];
+const nameRegex: RegExp = /[A-Za-zÀ-ú\s]{3,}/;
+const emailRegex: RegExp = /^[A-Za-z][A-Za-z0-9 \w\.]+@[A-Za-z0-9_\-.]{3,}\.[A-Za-z]{2,3}(\.[[A-Za-z]])?/;
+const cpfRegex: RegExp = /(^\d{3})\.(\d{3})\.(\d{3})\-(\d{2})$/;
+const cnpjRegex: RegExp = /\d{2}\.\d{3}\.\d{3}\/(0001|0002)\-\d{2}/;
+const cepRegex: RegExp = /(^(\d{2}\.\d{3})|(\d{5}))\-\d{3}$/;
+const ageRegex: RegExp = /(^1[8-9])|(^[2-8]\d)/
+const passwordRegex: RegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/
+
+
 
 
 if(sessionStorage.people){
@@ -107,15 +116,17 @@ function changeSignupTags(e:any) :void{
     }
 }
 
-function createAccount(e:any){
+async function createAccount(e:any){
 
-    let check = true
+    
 
     e.preventDefault();
 
 
     
     if(radioCandidate.checked){
+
+        let check = true
 
         let person: Person= {
                 type: "candidate",
@@ -130,40 +141,119 @@ function createAccount(e:any){
                 skills:[]
             }
 
-            if(signupPassword.value == signupConfirmPassword.value){
-                person.password = signupPassword.value;
+            //password
+
+            if(!signupPassword.value.match(passwordRegex)){
+                window.alert("Password needs to have a capital Letter, a number, a special charactere and have length between 8 and 20");
+                check = false;
+                return;
+                
+
+            }else{
+                if(signupPassword.value == signupConfirmPassword.value){
+                    person.password = signupPassword.value;
+                }
+                else{
+                    window.alert("Password does not match Confirm Password");
+                    check = false;
+                    return;
+                }
             }
-            else{
-                window.alert("Password does not match Confirm Passowrd");
+
+            //email
+
+            if(signupEmail.value.match(emailRegex)){
+
+                if(people.some((person)=>{
+                    person.login.includes(signupEmail.value)
+                })){
+                    window.alert("Email already exist in our database");
+                    check = false;
+                    return;
+                }        
+                person.login = signupEmail.value;
+
+            }else{
+                window.alert("Email doesn't have right format");
+                check = false;
                 return;
             }
-            person.login = signupEmail.value;
-            person.name = signupName.value;
-            person.age = parseInt(signupAge.value);
-            person.cpf = signupCpf.value;
-            person.cep = signupCep.value;
-            person.state = signupState.value;
+
+            //name
+
+            if(signupName.value.match(nameRegex)){
+                person.name = signupName.value;
+
+            }else{
+                window.alert("Name not valid");
+                check = false;
+                return;
+
+            }
+
+            //age
+
+            if(signupAge.value.match(ageRegex)){
+                person.age = parseInt(signupAge.value);
+
+            }else{
+                window.alert("Invalid Age. Please insert age between 18-80");
+                check = false;
+                return;
+
+            }
+
+            //cpf
+            if(signupCpf.value.match(cpfRegex)){
+                person.cpf = signupCpf.value;
+  
+
+            }else{
+                window.alert("Invalid CPF. Please insert your CPF");
+                check = false;
+                return;
+
+            }
+
+            //cep
+            if(signupCep.value.match(cepRegex)){
+                person.cep = signupCep.value;
+  
+
+            }else{
+                window.alert("Invalid Cep. Please insert a valid cep");
+                check = false;
+                return;
+
+            }
+
+            //state
+            if(signupState.value.match(nameRegex)){
+                person.state = signupState.value;
+  
+
+            }else{
+                window.alert("Invalid State Name");
+                check = false;
+                return;
+
+            }
+            
+            //description
             person.description = signupDescription.value;
 
 
-
-            
-            for (let p of people) {
-                if(person.login == p.login){
-                    check = false;
-                    window.alert("E-mail was used on another account")
-    
-                }                
-            }
-
-            if(check){
+            //send data
+            if(check === true){
                 people.push(person);
-
+                window.alert(`New Account created. Total Account: ${people.length}`)
+                console.log(people.length)
             }
            
             
     }
     else{
+        let check = true;
         let person: Person= {
                 type: "company",
                 login: "",
@@ -177,50 +267,112 @@ function createAccount(e:any){
                 skills:[]
             }
 
-            if(signupPassword.value == signupConfirmPassword.value){
-                person.password = signupPassword.value;
+            //password
+            if(!signupPassword.value.match(passwordRegex)){
+                window.alert("Password needs to have a capital Letter, a number, a special charactere and have length between 8 and 20");
+                check = false;
+                return;
+                
+
+            }else{
+                if(signupPassword.value == signupConfirmPassword.value){
+                    person.password = signupPassword.value;
+                }
+                else{
+                    window.alert("Password does not match Confirm Password");
+                    check = false;
+                    return;
+                }
             }
-            else{
-                window.alert("Password does not match Confirm Passowrd");
+
+            //email
+            if(signupEmail.value.match(emailRegex)){
+
+                if(people.some((person)=>{
+                    person.login.includes(signupEmail.value)
+                })){
+                    window.alert("Email already exist in our database");
+                    check = false;
+                    return;
+                }        
+                person.login = signupEmail.value;
+
+            }else{
+                window.alert("Email doesn't have right format");
+                check = false;
                 return;
             }
 
-            person.login = signupEmail.value;
-            person.companyName = signupCompanyName.value;
-            person.cnpj = signupCnpj.value;
-            person.country = signupCountry.value;
-            person.cep = signupCep.value;
-            person.state = signupState.value;
+            //company name
+            if(signupCompanyName.value.match(nameRegex)){
+                person.companyName = signupCompanyName.value;
+
+            }else{
+                window.alert("Company name not valid");
+                check = false;
+                return;
+
+            }
+
+            //cnpj
+            if(signupCnpj.value.match(cnpjRegex)){
+                person.cnpj = signupCnpj.value;
+
+            }else{
+                window.alert("Invalid CNPJ. Please insert age between 18-80");
+                check = false;
+                return;
+
+            }
+
+            //country
+            if(signupCountry.value.match(nameRegex)){
+                person.country = signupCountry.value;
+  
+
+            }else{
+                window.alert("Invalid Country formar!");
+                check = false;
+                return;
+
+            }
+
+            //cep
+            if(signupCep.value.match(cepRegex)){
+                person.cep = signupCep.value;
+  
+
+            }else{
+                window.alert("Invalid Cep. Please insert a valid cep");
+                check = false;
+                return;
+
+            }
+
+            //state
+            if(signupState.value.match(nameRegex)){
+                person.state = signupState.value;
+  
+
+            }else{
+                window.alert("Invalid State Name");
+                check = false;
+                return;
+
+            }
+            
+            //description
             person.description = signupDescription.value;
 
-            for (let p of people) {
-                if(p.login == person.login){
-                    check=false;
-                    window.alert("E-mail was used on another account")
-
-                }
-                
-            }
-
-            if(check){
+            //send data
+            if(check === true){
 
                 people.push(person);
+                window.alert(`New Account created. Total Account: ${people.length}`)
             }
                 
 
     }
-    
-
-    if(check){
-        window.alert(`New Account created. Total Account: ${people.length}`)
-
-
-    }
-
-    
-
-    
-    
 
 }
 
