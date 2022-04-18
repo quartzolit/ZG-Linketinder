@@ -45,8 +45,8 @@ let loggedPerson: Person;
 //--Creating our DOM variables--
 
 //Tag Company - Candidate
-const candidatePart: HTMLElement = document.querySelector(".candidate-section")  as HTMLElement;;
-const companyPart: HTMLElement = document.querySelector(".company-section") as HTMLElement;
+const candidateSection: HTMLElement = document.querySelector(".candidate-section")  as HTMLElement;;
+const companySection: HTMLElement = document.querySelector(".company-section") as HTMLElement;
 
 
 //Setting Required
@@ -83,16 +83,16 @@ const loginButton: HTMLElement = document.querySelector('.login-button') as HTML
 
 signupConfirmPassword?.addEventListener('keyup', validatePassword);
 signupButton.addEventListener('click', createAccount);
-radioTags.addEventListener('click', changeSignupTags);
+radioTags.addEventListener('click', changeSignupInputTagsThroughRadioSelection);
 loginButton.addEventListener('click', tryToLogin);
 
 
 
 //Functions
-function changeSignupTags(e:any) :void{
+function changeSignupInputTagsThroughRadioSelection(e:any) :void{
     if(e.target.classList.contains('select-company')){
-        candidatePart.style.display = 'none';
-        companyPart.style.display = 'inline-block'
+        candidateSection.style.display = 'none';
+        companySection.style.display = 'inline-block'
         companyElements.forEach(e=>{
             e.setAttribute("required","required");
         })
@@ -104,8 +104,8 @@ function changeSignupTags(e:any) :void{
 
     else if(e.target.classList.contains('select-candidate')){
         e.target.setAttribute('checked','checked');
-        companyPart.style.display = 'none'
-        candidatePart.style.display = 'inline-block';
+        companySection.style.display = 'none'
+        candidateSection.style.display = 'inline-block';
         candidateElements.forEach(e=>{
             e.setAttribute("required","required");
         })
@@ -116,7 +116,7 @@ function changeSignupTags(e:any) :void{
     }
 }
 
-async function createAccount(e:any){
+function createAccount(e:any){
 
     
 
@@ -138,7 +138,9 @@ async function createAccount(e:any){
                 cep:"",
                 state: "",
                 description:"",
-                skills:[]
+                skills:[],
+                approval:[],
+                disapproval:[],
             }
 
             //password
@@ -264,7 +266,9 @@ async function createAccount(e:any){
                 cep:"",
                 state: "",
                 description:"",
-                skills:[]
+                skills:[],
+                approval:[],
+                disapproval:[]
             }
 
             //password

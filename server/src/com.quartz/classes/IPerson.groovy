@@ -2,9 +2,9 @@ package com.quartz.classes
 
 interface IPerson {
 
-    void addSkills(EnumSkills skill)
+    void addSkillToList(EnumSkills skill)
 
-    void removeSkills(EnumSkills skill)
+    void removeSkillToList(EnumSkills skill)
 
 
 }

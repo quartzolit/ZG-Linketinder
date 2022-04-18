@@ -30,7 +30,7 @@ println(companies)
 println(candidates[0])
 
 //Testing some Methods
-candidates[0].addSkills(EnumSkills.BACKEND)
+candidates[0].addSkillToList(EnumSkills.BACKEND)
 
 println(candidates[0])
 

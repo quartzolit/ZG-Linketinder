@@ -15,14 +15,7 @@ let currentItem: Person;
 
 loadData();
 
-
-peopleList.push(JSON.parse(sessionStorage.people)[0]);
-
-logged = JSON.parse(sessionStorage.loggedPerson);
-
-
 window.onload = function loadDOM(){
- 
 
     if(logged.type == "candidate"){
         filteredList = peopleList.filter((item)=>{
@@ -35,9 +28,6 @@ window.onload = function loadDOM(){
             return item.type === "candidate";
         });
     }
-
-
-
 
     //Creating DOM variables
    
@@ -60,28 +50,19 @@ window.onload = function loadDOM(){
     if(logged.skills!.length>0){
         if(logged.skills){
             for (const skill of logged.skills) {
-
-                creatingOptions(skill)
-                
+                creatingOptions(skill)    
             }
-
-        }
-        
-        updateFilteredSlots();
+        } 
+        updateFilteredList();
     }
 
     
     // event Listeners
 
-    
-
-
     addButton.addEventListener('click', addingSkillstoList);
     removeButton.addEventListener('click', removingSkillstoList);
-
     swipeLeft.addEventListener("click", disapprovingSlot);
     swipeRight.addEventListener("click", approvingSlot);
-
     logoutButton.addEventListener("click", saveAndLogout);
 
 
@@ -91,19 +72,13 @@ window.onload = function loadDOM(){
     //functions
 
 
-
-    function addingSkillstoList(){
-
+    function resetSwipes(){
         logged.approval = [];
         logged.disapproval = [];
-   
-    
-        let selectedSkill = addSelect.value;
-        let checkUniqueSkill = false;
+    }
 
-        if(selectedSkill === "select one"){
-            return
-        }
+    function checkingIfSKillIsUnique(selectedSkill: string){
+        let checkUniqueSkill = false;
 
         if(logged.skills){
             logged.skills.forEach(e => {
@@ -122,8 +97,19 @@ window.onload = function loadDOM(){
 
         }
 
-        updateFilteredSlots();
-       
+    }
+
+    function addingSkillstoList(){
+        let selectedSkill = addSelect.value;
+        
+        if(selectedSkill === "select one"){
+            return
+        }
+        resetSwipes();
+
+        checkingIfSKillIsUnique(selectedSkill);
+
+        updateFilteredList();  
     }
 
     function creatingOptions(element: string){
@@ -142,64 +128,37 @@ window.onload = function loadDOM(){
     function removingSkillstoList(){
         let selectedSkill:string = yourSkillsSelect.value;
 
-        logged.approval = [];
-        logged.disapproval = [];
-
         if(selectedSkill === "select one"){
             return
         }
+        resetSwipes();
 
-        for(let i=0; i<yourSkillsSelect.length; i++){
+        checkingIfSKillIsUnique(selectedSkill);
 
-            if(yourSkillsSelect.options[i].value === selectedSkill){
-                yourSkillsSelect.remove(i);
-            }
-        }
-
-        if(logged.skills){
-            for(let i=0; i<logged.skills?.length; i++){
-                if(logged.skills[i] === selectedSkill){
-                    logged.skills.splice(i,1);
-                }
-
-            }
-
-        }
-
-     //   console.log(selectedSkill)
-
-        updateFilteredSlots();
-
-        
+        updateFilteredList();
 
     }
+    
 
-    function updateFilteredSlots(){
+    function updateFilteredList(){
 
         if(logged.skills){
-
-          //  console.log(logged.skills)
-          //  console.log(filteredList)
-
             filteredBySkillList = filteredList.filter(item=>{
                 
                 return item.skills?.some(skill => logged.skills?.includes(skill.toLowerCase()))
 
             })
         }  
-
-       // console.log(filteredBySkillList)
-
-        showtopVacancy();
+        showTopItemFromList();
     }
 
-    function showtopVacancy():void{
+    function showTopItemFromList():void{
 
         while(slotDiv.firstElementChild){
             slotDiv.removeChild(slotDiv.firstElementChild);
         }
 
-        filteredBySkillList=validateList(filteredBySkillList);
+        //filteredBySkillList=validateList(filteredBySkillList);
 
 
         if(filteredBySkillList.length>0){
@@ -263,14 +222,14 @@ window.onload = function loadDOM(){
             slotDiv.appendChild(vacancyFieldSet);
     
         }else{
-            emptySlotDiv();
+            noMoreItemsFromList();
         }
 
 
 
     }
 
-    function emptySlotDiv(){
+    function noMoreItemsFromList(){
 
         while(slotDiv.firstElementChild){
             slotDiv.removeChild(slotDiv.firstElementChild);
@@ -306,12 +265,38 @@ window.onload = function loadDOM(){
 
     function validateList(list: Person[]):Person[]{
 
-        console.log(logged.approval)
+        console.log(logged.approval);
+        let checkApproval: boolean = true;
+        let checkDisapproval: boolean = true;
         
         let newList: Person[] = list.filter(item=>{
 
-            if(!logged.approval?.includes(item) && !logged.disapproval?.includes(item)){
-                return item
+            if(logged.approval){
+                if(logged.approval.length>0){
+                    for (const approved of logged.approval) {
+                        if(approved.login===item.login){
+                            checkApproval= false;
+                        }  
+                        
+                    }
+                }
+
+                
+            }
+
+            if(logged.disapproval){
+                    for (const disapproved of logged.disapproval) {
+                        if(disapproved.login===item.login){
+                            checkDisapproval= false;
+                        } 
+                        
+                        console.log("entrei aqui"); 
+                    }
+                
+            }
+
+            if(checkApproval && checkDisapproval){
+                return item;
             }
         })
 
@@ -328,10 +313,10 @@ window.onload = function loadDOM(){
         logged.disapproval?.push(currentItem);
 
         if(filteredBySkillList.length>0){
-            showtopVacancy();
+            showTopItemFromList();
         }
         else{
-            emptySlotDiv();
+            noMoreItemsFromList();
         }
 
     }
@@ -343,10 +328,10 @@ window.onload = function loadDOM(){
       //  console.log(disapprovedList);
 
         if(filteredBySkillList.length>0){
-            showtopVacancy();
+            showTopItemFromList();
         }
         else{
-            emptySlotDiv();
+            noMoreItemsFromList();
         }
 
     }
@@ -380,158 +365,169 @@ window.onload = function loadDOM(){
 
 
 
-function loadData(){
+async function loadData(){
 
-    const person1: Person = {
-        type: "candidate",
-        login: "luiz.moura@acelerazg.com.br",
-        password: "123456",
-        name: "Luiz Arthur Moura",
-        cpf: "405.155.608-55",
-        age: 30,
-        state: "São Paulo",
-        cep: "12608-170",
-        description: "Cool guy",
-        skills:["CSS", "HTML", "JAVA", "GITHUB", "GROOVY"]
+    peopleList.push(await JSON.parse(sessionStorage.people)[0]);
 
-    };
+    logged = await JSON.parse(sessionStorage.loggedPerson);
 
-    const person2: Person = {
-        type: "candidate",
-        login: "josue.faria@gmail.com",
-        password: "123456",
-        name: "Josué Farias",
-        cpf: "MG-112.344.566",
-        age: 35,
-        state: "Minas Gerais",
-        cep: "30205-102",
-        description: "Eu não faria, mas Josué farias",
-        skills:["JAVA", "GROOVY", "BACKEND"]
 
-    };
+    if(peopleList.length < 10){
 
-    const person3: Person = {
-        type: "candidate",
-        login: "gz.tenorio@uol.com.br",
-        password: "123456",
-        name: "Gezebel Tenório",
-        cpf: "405.155.608-55",
-        age: 28,
-        state: "São Paulo",
-        cep: "11223-278",
-        description: "Me passa o gel Gezebel",
-        skills:["DATABASE", "HIBERNATE", "REGEX", "GITHUB"]
+        const person1: Person = {
+            type: "candidate",
+            login: "luiz.moura@acelerazg.com.br",
+            password: "123456",
+            name: "Luiz Arthur Moura",
+            cpf: "405.155.608-55",
+            age: 30,
+            state: "São Paulo",
+            cep: "12608-170",
+            description: "Cool guy",
+            skills:["CSS", "HTML", "JAVA", "GITHUB", "GROOVY"]
 
-    };
+        };
 
-    const person4: Person = {
-        type: "candidate",
-        login: "duarte@yahoo.com.br",
-        password: "123456",
-        name: "Lima Duarte",
-        cpf: "055.223.541-27",
-        age: 70,
-        state: "Rio de Janeiro",
-        cep: "21551-003",
-        description: "Não me peça para limar. Duarte, Lima",
-        skills:["BACKEND", "FRONTEND", "DATABASE"]
 
-    };
+        const person2: Person = {
+            type: "candidate",
+            login: "josue.faria@gmail.com",
+            password: "123456",
+            name: "Josué Farias",
+            cpf: "MG-112.344.566",
+            age: 35,
+            state: "Minas Gerais",
+            cep: "30205-102",
+            description: "Eu não faria, mas Josué farias",
+            skills:["JAVA", "GROOVY", "BACKEND"]
 
-    const person5: Person = {
-        type: "candidate",
-        login: "faroukinho@gmail.com",
-        password: "123456",
-        name: "Tomás Farouk",
-        cpf: "523.844.971-56",
-        age: 48,
-        state: "Sergipe",
-        cep: "49000-200",
-        description: "Gosto de cebola",
-        skills:["JAVA","GROOVY"]
+        };
 
-    };
+        const person3: Person = {
+            type: "candidate",
+            login: "gz.tenorio@uol.com.br",
+            password: "123456",
+            name: "Gezebel Tenório",
+            cpf: "405.155.608-55",
+            age: 28,
+            state: "São Paulo",
+            cep: "11223-278",
+            description: "Me passa o gel Gezebel",
+            skills:["DATABASE", "HIBERNATE", "REGEX", "GITHUB"]
 
-    const company1: Person = {
-        type: "company",
-        login: "comercial@zgsolucoes.com.br",
-        password: "123456",
-        companyName: "Zero Glosa",
-        cnpj: "14.488.144/0001",
-        country: "Brazil",
-        state: "Goiás",
-        cep: "74070-040",
-        description: "Awesome Company to work",
-        skills:["DATABASE", "JAVA", "GROOVY", "GITHUB"]
+        };
 
-    };
+        const person4: Person = {
+            type: "candidate",
+            login: "duarte@yahoo.com.br",
+            password: "123456",
+            name: "Lima Duarte",
+            cpf: "055.223.541-27",
+            age: 70,
+            state: "Rio de Janeiro",
+            cep: "21551-003",
+            description: "Não me peça para limar. Duarte, Lima",
+            skills:["BACKEND", "FRONTEND", "DATABASE"]
 
-    const company2: Person = {
-        type: "company",
-        login: "comercial@petrobras.com.br",
-        password: "123456",
-        companyName: "Petrobras",
-        cnpj: "33.000.167/1049-00",
-        country: "Brazil",
-        state: "Rio de Janeiro",
-        cep: "20.031-912",
-        description: "Gas super high price",
-        skills:["CSS", "HTML", "BACKEND", "GITHUB"]
+        };
 
-    };
+        const person5: Person = {
+            type: "candidate",
+            login: "faroukinho@gmail.com",
+            password: "123456",
+            name: "Tomás Farouk",
+            cpf: "523.844.971-56",
+            age: 48,
+            state: "Sergipe",
+            cep: "49000-200",
+            description: "Gosto de cebola",
+            skills:["JAVA","GROOVY"]
 
-    const company3: Person = {
-        type: "company",
-        login: "comercial@arrozgostoso.com.br",
-        password: "123456",
-        companyName: "Arroz-Gostoso",
-        cnpj: "12.544.231/0011",
-        country: "Brazil",
-        state: "Mato Grosso do Sul",
-        cep: "69512-030",
-        description: "Selling good quality rice",
-        skills:["DATABASE", "FRONTEND", "REGEX","CSS"]
+        };
 
-    };
+        const company1: Person = {
+            type: "company",
+            login: "comercial@zgsolucoes.com.br",
+            password: "123456",
+            companyName: "Zero Glosa",
+            cnpj: "14.488.144/0001",
+            country: "Brazil",
+            state: "Goiás",
+            cep: "74070-040",
+            description: "Awesome Company to work",
+            skills:["DATABASE", "JAVA", "GROOVY", "GITHUB"]
 
-    const company4: Person = {
-        type: "company",
-        login: "boliche@imperio.com.br",
-        password: "123456",
-        companyName: "Império do Boliche",
-        cnpj: "84.521.799/0005",
-        country: "Brazil",
-        state: "Maranhão",
-        cep: "81224-103",
-        description: "Come play with us",
-        skills:["DATABASE", "BACKEND", "FRONTEND", "GITHUB"]
+        };
 
-    };
+        const company2: Person = {
+            type: "company",
+            login: "comercial@petrobras.com.br",
+            password: "123456",
+            companyName: "Petrobras",
+            cnpj: "33.000.167/1049-00",
+            country: "Brazil",
+            state: "Rio de Janeiro",
+            cep: "20.031-912",
+            description: "Gas super high price",
+            skills:["CSS", "HTML", "BACKEND", "GITHUB"]
 
-    const company5: Person = {
-        type: "company",
-        login: "boi@nafonte.com.br",
-        password: "123456",
-        companyName: "Boi na Fonte",
-        cnpj: "87.530.973/0103",
-        country: "Brazil",
-        state: "Goiás",
-        cep: "71522-008",
-        description: "Come refresh your bull",
-        skills:["HIBERNATE", "JAVA", "GROOVY", "HTML","CSS"]
+        };
 
-    };
+        const company3: Person = {
+            type: "company",
+            login: "comercial@arrozgostoso.com.br",
+            password: "123456",
+            companyName: "Arroz-Gostoso",
+            cnpj: "12.544.231/0011",
+            country: "Brazil",
+            state: "Mato Grosso do Sul",
+            cep: "69512-030",
+            description: "Selling good quality rice",
+            skills:["DATABASE", "FRONTEND", "REGEX","CSS"]
 
-    peopleList.push(person1);
-    peopleList.push(person2);
-    peopleList.push(person3);
-    peopleList.push(person4);
-    peopleList.push(person5);
-    peopleList.push(company1);
-    peopleList.push(company2);
-    peopleList.push(company3);
-    peopleList.push(company4);
-    peopleList.push(company5);
+        };
+
+        const company4: Person = {
+            type: "company",
+            login: "boliche@imperio.com.br",
+            password: "123456",
+            companyName: "Império do Boliche",
+            cnpj: "84.521.799/0005",
+            country: "Brazil",
+            state: "Maranhão",
+            cep: "81224-103",
+            description: "Come play with us",
+            skills:["DATABASE", "BACKEND", "FRONTEND", "GITHUB"]
+
+        };
+
+        const company5: Person = {
+            type: "company",
+            login: "boi@nafonte.com.br",
+            password: "123456",
+            companyName: "Boi na Fonte",
+            cnpj: "87.530.973/0103",
+            country: "Brazil",
+            state: "Goiás",
+            cep: "71522-008",
+            description: "Come refresh your bull",
+            skills:["HIBERNATE", "JAVA", "GROOVY", "HTML","CSS"]
+
+        };
+
+
+        peopleList.push(person1);
+        peopleList.push(person2);
+        peopleList.push(person3);
+        peopleList.push(person4);
+        peopleList.push(person5);
+        peopleList.push(company1);
+        peopleList.push(company2);
+        peopleList.push(company3);
+        peopleList.push(company4);
+        peopleList.push(company5);
+    }
+
 }
 
 
