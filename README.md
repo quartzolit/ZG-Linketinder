@@ -69,7 +69,8 @@ Refactoring using clear code method. The following methods and variables were ch
 
 ## 1.9
 
-S.O.L.I.D methods applied. On server side, the methods of Person class about skills was inserted at a proper class. Tests were refactored to make it work properly.
+S.O.L.I.D methods applied. On server side, the methods of Person class about skills was inserted at a proper class to preserve the idea of Single Responsability. Some interfaces were created to prepare the backend to connect to DB. Tests were refactored to make it work properly.
+
 
 
 # Executing project
