@@ -11,9 +11,9 @@ class PersonTestGroovy extends GroovyTestCase {
 
         EnumSkills expectedResult = EnumSkills.JAVA;
 
-        person.addSkills(EnumSkills.JAVA );
+        person.skills.addSkillToList(EnumSkills.JAVA );
 
-        GroovyTestCase.assertTrue(person.getSkills().contains(expectedResult))
+        GroovyTestCase.assertTrue(person.skills.getSkills().contains(expectedResult))
 
         println("Add skill test executed")
     }
@@ -21,15 +21,15 @@ class PersonTestGroovy extends GroovyTestCase {
     void testRemoveSkills() {
         Person person = new Person();
 
-        person.addSkills(EnumSkills.HIBERNATE);
-        person.addSkills(EnumSkills.HTML);
+        person.skills.removeSkillToList(EnumSkills.HIBERNATE);
+        person.skills.addSkillToList(EnumSkills.HTML);
 
         int expectSize = 1;
         EnumSkills expectedResult = EnumSkills.HTML;
 
-        person.removeSkills(EnumSkills.HIBERNATE);
+        person.skills.removeSkillToList(EnumSkills.HIBERNATE);
 
-        GroovyTestCase.assertTrue(person.getSkills().contains(expectedResult) && person.getSkills().size() == expectSize );
+        GroovyTestCase.assertTrue(person.skills.getSkills().contains(expectedResult) && person.skills.getSkills().size() == expectSize );
         println("Remove Skill Test Executed")
     }
 
@@ -37,13 +37,13 @@ class PersonTestGroovy extends GroovyTestCase {
 
         Person person = new Person();
 
-        person.addSkills(EnumSkills.HIBERNATE);
-        person.addSkills(EnumSkills.HTML);
-        person.addSkills(EnumSkills.HTML);
+        person.skills.addSkillToList(EnumSkills.HIBERNATE);
+        person.skills.addSkillToList(EnumSkills.HTML);
+        person.skills.addSkillToList(EnumSkills.HTML);
 
         int expectedResult = 2
 
-        GroovyTestCase.assertEquals(expectedResult, person.getSkills().size())
+        GroovyTestCase.assertEquals(expectedResult, person.skills.getSkills().size())
 
         println("Unique Skill test executed")
 

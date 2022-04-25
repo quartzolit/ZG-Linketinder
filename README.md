@@ -65,6 +65,13 @@ Refactoring using clear code method. The following methods and variables were ch
 - On view-page.ts, A method called checkingIfSkillIsUnique was created to decouple this function from addingSkillsToList / removingSkillsToList;addingSkillsToList;
 - On view-page.ts, showTopVacancy was changed to showTopItemFromList in order to clarify the idea of this function;
 - On view-page.ts, emptySlotDiv was changed to noMoreItemsFromList in order to clarify the idea of this function;
+
+
+## 1.9
+
+S.O.L.I.D methods applied. On server side, the methods of Person class about skills was inserted at a proper class. Tests were refactored to make it work properly.
+
+
 # Executing project
 
 To execute the project you only need to run the application.groovy file. If you want to run unit tests, run the files in test folder instead
