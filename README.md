@@ -26,7 +26,7 @@ PS: There is a issue on saving the slots you approve and disapprove. It will be 
 Regex validation on form implemented and tested!
 
 ## 1.5
-Database (to be implemented).
+First, we implemented a MER and a SQL file to build the database. We fought that 9 tables were enough to deal with the situation of Mr. Sandubinha. We create a table for candidates, companies, skills, and created some support tables to associate those skills for candidates and companies's vacancies. We also created some support tables to help on swipe left/right situation. So we created the table vacancies_candidates to check which vacancy the candidate approve (the approval variable was presented on status table) and companies_candidates allow us to check if a company swiped right or left to a candidate (also using status as a parameter to check this situation).
 
 ## 1.6
 Graddle Build Tool (To be implemented).
