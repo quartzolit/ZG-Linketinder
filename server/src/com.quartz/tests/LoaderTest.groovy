@@ -14,6 +14,7 @@ class LoaderTest extends GroovyTestCase {
 
         int expectedSize = 5
 
+
         assertEquals(expectedSize, companies.size())
 
         println("Load Companies test executed")

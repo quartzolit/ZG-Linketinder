@@ -61,6 +61,9 @@
       <root url="jar://$PROJECT_DIR$/server/lib/groovy-4.0.0.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/server/lib" />
+    </SOURCES>
+    <jarDirectory url="file://$PROJECT_DIR$/server/lib" recursive="false" type="SOURCES" />
   </library>
 </component>

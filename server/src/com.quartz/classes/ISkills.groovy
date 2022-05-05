@@ -2,8 +2,8 @@ package com.quartz.classes
 
 interface ISkills{
 
-    void addSkillToList(EnumSkills skill)
+    void addSkillToList(String skill)
 
-    void removeSkillToList(EnumSkills skill)
+    void removeSkillToList(String skill)
 
 }

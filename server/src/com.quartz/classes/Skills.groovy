@@ -4,14 +4,14 @@ class Skills implements ISkills{
     List<String> skills=[];
 
     @Override
-    void addSkillToList(EnumSkills skill) {
+    void addSkillToList(String skill) {
 
         this.skills << skill
         this.skills = this.skills.unique()
     }
 
     @Override
-    void removeSkillToList(EnumSkills skill) {
+    void removeSkillToList(String skill) {
         this.skills.remove(skill)
     }
 }
