@@ -1,7 +1,7 @@
 package com.quartz.tests
 
-import com.quartz.classes.Candidate
-import com.quartz.classes.Company
+import com.quartz.classes.person.Candidate
+import com.quartz.classes.person.Company
 import com.quartz.classes.Loader
 import groovy.test.GroovyTestCase
 

@@ -1,8 +1,8 @@
 package com.quartz.app
 
-import com.quartz.classes.Candidate
-import com.quartz.classes.Company
-import com.quartz.classes.EnumSkills
+import com.quartz.classes.person.Candidate
+import com.quartz.classes.person.Company
+import com.quartz.classes.person.EnumSkills
 import com.quartz.classes.Loader
 
 

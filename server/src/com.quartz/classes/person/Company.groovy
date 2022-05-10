@@ -1,4 +1,8 @@
-package com.quartz.classes
+package com.quartz.classes.person
+
+import com.quartz.classes.person.Person
+import com.quartz.classes.person.Skills
+import com.quartz.classes.person.Vacancy
 
 @groovy.transform.InheritConstructors
 @groovy.transform.ToString

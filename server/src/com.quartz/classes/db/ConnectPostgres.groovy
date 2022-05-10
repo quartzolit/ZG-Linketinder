@@ -1,4 +1,10 @@
-package com.quartz.classes
+package com.quartz.classes.db
+
+
+import com.quartz.classes.person.Candidate
+import com.quartz.classes.person.Company
+import com.quartz.classes.person.Skills
+import com.quartz.classes.person.Vacancy
 
 import java.sql.Connection
 import java.sql.DriverManager
@@ -6,11 +12,6 @@ import java.sql.PreparedStatement
 import java.sql.ResultSet
 import java.sql.SQLException
 import java.sql.Statement
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.Period
-import java.util.concurrent.ExecutorService
 
 class ConnectPostgres implements IConnect {
 
@@ -66,9 +67,7 @@ class ConnectPostgres implements IConnect {
 
             ResultSet res = candidates.executeQuery()
 
-            res.last()
-            int qtd = res.getRow()
-            res.beforeFirst()
+            int qtd = getResultSetLength(res)
 
             if (qtd >0){
 
@@ -137,9 +136,9 @@ class ConnectPostgres implements IConnect {
 
             ResultSet res = companies.executeQuery()
 
-            res.last()
-            int qtd = res.getRow()
-            res.beforeFirst()
+
+            int qtd = getResultSetLength(res)
+
 
             if (qtd >0){
 
@@ -204,9 +203,7 @@ class ConnectPostgres implements IConnect {
 
             ResultSet res = vacancies.executeQuery()
 
-            res.last()
-            int qtd = res.getRow()
-            res.beforeFirst()
+            int qtd = getResultSetLength(res)
 
             if (qtd >0){
                 println("Listing Companies...")
@@ -268,9 +265,7 @@ class ConnectPostgres implements IConnect {
 
                 ResultSet res = candidateFilter.executeQuery()
 
-                res.last()
-                int qtd = res.getRow()
-                res.beforeFirst()
+                int qtd = getResultSetLength(res)
 
                 if(qtd > 0){
                     println("A user with this e-mail already exists")
@@ -323,9 +318,7 @@ class ConnectPostgres implements IConnect {
 
                 ResultSet res = searchSkill.executeQuery()
 
-                res.last()
-                int qtd = res.getRow()
-                res.beforeFirst()
+                int qtd = getResultSetLength(res)
 
                 if(qtd>0){
                     insertCandidateSkillRelations(email, skill)
@@ -377,9 +370,7 @@ class ConnectPostgres implements IConnect {
 
             ResultSet res = selectIDS.executeQuery();
 
-            res.last()
-            int qtd = res.getRow()
-            res.beforeFirst()
+            int qtd = getResultSetLength(res)
 
             if(qtd > 0){
                 int idCandidate = res.getInt(1)
@@ -427,9 +418,7 @@ class ConnectPostgres implements IConnect {
 
             ResultSet res = companyFilter.executeQuery()
 
-            res.last()
-            int qtd = res.getRow()
-            res.beforeFirst()
+            int qtd = getResultSetLength(res)
 
             if(qtd > 0){
                 println("A user with this e-mail already exists")
@@ -476,9 +465,7 @@ class ConnectPostgres implements IConnect {
 
             ResultSet res = searchCreatedCompany.executeQuery()
 
-            res.last()
-            int qtd = res.getRow()
-            res.beforeFirst()
+            int qtd = getResultSetLength(res)
 
             if(qtd>0){
                 int id = res.getInt(1)
@@ -536,9 +523,7 @@ class ConnectPostgres implements IConnect {
 
                 ResultSet res = searchSkill.executeQuery()
 
-                res.last()
-                int qtd = res.getRow()
-                res.beforeFirst()
+                int qtd = getResultSetLength(res)
 
                 if(qtd>0){
                     insertCompanySkillRelations(email, vacancy.name, skill)
@@ -592,9 +577,7 @@ class ConnectPostgres implements IConnect {
 
             ResultSet res = selectIDS.executeQuery();
 
-            res.last()
-            int qtd = res.getRow()
-            res.beforeFirst()
+            int qtd = getResultSetLength(res)
 
             if(qtd > 0){
                 int idVacancy = res.getInt(1)
@@ -649,10 +632,7 @@ class ConnectPostgres implements IConnect {
 
             ResultSet res = search.executeQuery()
 
-            res.last()
-            int qtd = res.getRow()
-
-            res.beforeFirst()
+            int qtd = getResultSetLength(res)
 
             if(qtd>0){
                 PreparedStatement update = conn.prepareStatement(updateCandidate)
@@ -704,10 +684,7 @@ class ConnectPostgres implements IConnect {
 
             ResultSet res = search.executeQuery()
 
-            res.last()
-            int qtd = res.getRow()
-
-            res.beforeFirst()
+            int qtd = getResultSetLength(res)
 
             if(qtd>0){
 
@@ -757,10 +734,7 @@ class ConnectPostgres implements IConnect {
 
             ResultSet res = search.executeQuery()
 
-            res.last()
-            int qtd = res.getRow()
-
-            res.beforeFirst()
+            int qtd = getResultSetLength(res)
 
             if(qtd>0){
 
@@ -804,10 +778,7 @@ class ConnectPostgres implements IConnect {
 
             ResultSet res = search.executeQuery()
 
-            res.last()
-            int qtd = res.getRow()
-
-            res.beforeFirst()
+            int qtd = getResultSetLength(res)
 
             if(qtd>0){
 
@@ -928,5 +899,13 @@ class ConnectPostgres implements IConnect {
             println("Connection not Found")
             System.exit(-42)
         }
+    }
+
+    int getResultSetLength (ResultSet res){
+
+        res.last()
+        int qtd = res.getRow()
+        res.beforeFirst()
+        return qtd
     }
 }

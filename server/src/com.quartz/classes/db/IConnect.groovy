@@ -1,4 +1,8 @@
-package com.quartz.classes
+package com.quartz.classes.db
+
+import com.quartz.classes.person.Candidate
+import com.quartz.classes.person.Company
+import com.quartz.classes.person.Vacancy
 
 import java.sql.Connection
 

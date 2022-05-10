@@ -1,4 +1,4 @@
-package com.quartz.classes
+package com.quartz.classes.person
 
 @groovy.transform.ToString
 

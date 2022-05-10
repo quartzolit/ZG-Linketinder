@@ -1,7 +1,7 @@
 package com.quartz.tests
 
-import com.quartz.classes.EnumSkills
-import com.quartz.classes.Person
+import com.quartz.classes.person.EnumSkills
+import com.quartz.classes.person.Person
 import groovy.test.GroovyTestCase
 
 

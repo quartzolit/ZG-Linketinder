@@ -1,4 +1,6 @@
-package com.quartz.classes
+package com.quartz.classes.person
+
+import com.quartz.classes.person.Skills
 
 interface IVacancy {
 

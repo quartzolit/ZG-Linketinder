@@ -1,4 +1,4 @@
-package com.quartz.classes
+package com.quartz.classes.db
 
 import java.text.SimpleDateFormat
 import java.time.Period

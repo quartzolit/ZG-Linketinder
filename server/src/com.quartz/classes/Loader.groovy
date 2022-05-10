@@ -1,5 +1,12 @@
 package com.quartz.classes
 
+import com.quartz.classes.person.Candidate
+import com.quartz.classes.person.Company
+import com.quartz.classes.person.EnumSkills
+import com.quartz.classes.person.Person
+import com.quartz.classes.person.Skills
+import com.quartz.classes.person.Vacancy
+
 @groovy.transform.ToString
 class Loader {
 
