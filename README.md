@@ -78,6 +78,16 @@ S.O.L.I.D methods applied. On server side, the methods of Person class about ski
 
 A factory design pattern was implemented bringin flexibility to database connections
 
+## 1.11
+
+The organization of the files was reordered following MVC pattern. To sum up the changes:
+
+- All files related to database were redirected to dto package
+
+- person package (Candidate, Company, Person, Vacancy and Skills classes and interfaces), tests and loader were  to model package
+
+- HTML, CSS and typescript files were redirected to view package
+
 
 
 # Executing project
